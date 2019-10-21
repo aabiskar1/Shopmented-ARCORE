@@ -231,15 +231,28 @@ namespace GoogleARCore.Examples.HelloAR
             }
         }
 
-        public void ListCycle()
+        public void ListCycleRight()
         {
             int sizeOfList = GameObjectHorizontalPlanePrefab.Count;
             if (listIndex >= sizeOfList)
             {
-                listIndex = 0;
+               
             }
             else {
                 listIndex++;
+            }
+
+        }
+        public void ListCycleLeft()
+        {
+            int sizeOfList = GameObjectHorizontalPlanePrefab.Count;
+            if (listIndex <= 0)
+            {
+                
+            }
+            else
+            {
+                listIndex--;
             }
 
         }
