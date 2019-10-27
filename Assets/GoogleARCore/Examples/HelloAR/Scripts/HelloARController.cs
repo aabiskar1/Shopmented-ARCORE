@@ -23,8 +23,10 @@ namespace GoogleARCore.Examples.HelloAR
     using System.Collections.Generic;
     using GoogleARCore;
     using GoogleARCore.Examples.Common;
+    using UnityEditor;
     using UnityEngine;
     using UnityEngine.EventSystems;
+    using UnityEngine.UI;
 
 #if UNITY_EDITOR
     // Set up touch input propagation while using Instant Preview in the editor.
@@ -85,6 +87,8 @@ namespace GoogleARCore.Examples.HelloAR
         /// </summary>
         public void Update()
         {
+            Text prefabNameTxt = GameObject.Find("Canvas/prefabNameTxt").GetComponent<Text>();
+            prefabNameTxt.text= "hello";
             _UpdateApplicationLifecycle();
 
             // If the player has not touched the screen, we are done with this update.
@@ -240,6 +244,7 @@ namespace GoogleARCore.Examples.HelloAR
             }
             else {
                 listIndex++;
+               
             }
 
         }
@@ -256,6 +261,8 @@ namespace GoogleARCore.Examples.HelloAR
             }
 
         }
+
+
 
     }
     
