@@ -87,8 +87,8 @@ namespace GoogleARCore.Examples.HelloAR
         /// </summary>
         public void Update()
         {
-            Text prefabNameTxt = GameObject.Find("Canvas/prefabNameTxt").GetComponent<Text>();
-            prefabNameTxt.text= "hello";
+            Text prefabNameTxt = GameObject.Find("Canvas/prefabLabel").GetComponent<Text>();
+            prefabNameTxt.text= GameObjectHorizontalPlanePrefab[listIndex].name;
             _UpdateApplicationLifecycle();
 
             // If the player has not touched the screen, we are done with this update.
@@ -307,6 +307,12 @@ namespace GoogleARCore.Examples.HelloAR
 
             string arguments = intent.Call<string>("getDataString");
             _ShowAndroidToastMessage(arguments);
+        }
+        public Text textShowed = null;
+        public void changeText(string word) 
+        {
+            textShowed.text = word;
+
         }
 
     }

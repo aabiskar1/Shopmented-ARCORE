@@ -72,41 +72,41 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10068}
     - Class: 114
-      Script: {instanceID: 10540}
+      Script: {instanceID: 10542}
     - Class: 114
-      Script: {instanceID: 10554}
+      Script: {instanceID: 10556}
     - Class: 114
-      Script: {instanceID: 10574}
+      Script: {instanceID: 10576}
     - Class: 114
-      Script: {instanceID: 10644}
+      Script: {instanceID: 10646}
     - Class: 114
-      Script: {instanceID: 10674}
+      Script: {instanceID: 10676}
     - Class: 114
-      Script: {instanceID: 10878}
+      Script: {instanceID: 10880}
     - Class: 114
-      Script: {instanceID: 11090}
+      Script: {instanceID: 11092}
     - Class: 114
-      Script: {instanceID: 11248}
+      Script: {instanceID: 11250}
     - Class: 114
-      Script: {instanceID: 11272}
+      Script: {instanceID: 11274}
     - Class: 114
-      Script: {instanceID: 11492}
+      Script: {instanceID: 11494}
     - Class: 114
-      Script: {instanceID: 11542}
+      Script: {instanceID: 11544}
     - Class: 114
-      Script: {instanceID: 11588}
+      Script: {instanceID: 11590}
     - Class: 114
-      Script: {instanceID: 11680}
+      Script: {instanceID: 11682}
     - Class: 114
-      Script: {instanceID: 11930}
+      Script: {instanceID: 11932}
     - Class: 114
-      Script: {instanceID: 11936}
+      Script: {instanceID: 11938}
     - Class: 114
-      Script: {instanceID: 12046}
+      Script: {instanceID: 12048}
     - Class: 114
-      Script: {instanceID: 12106}
+      Script: {instanceID: 12108}
     - Class: 114
-      Script: {instanceID: 12504}
+      Script: {instanceID: 12506}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -316,6 +316,12 @@ ScriptsOnlyBuild:
     className: LeanSelect
   - hash:
       serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: GoogleARCore.Examples.HelloAR
+    className: LaunchApp
+  - hash:
+      serializedVersion: 2
       Hash: 8aa3d6ccbcb54ee8db6c1229854adaaa
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
@@ -496,7 +502,7 @@ ScriptsOnlyBuild:
     className: ControlPlayableAsset
   - hash:
       serializedVersion: 2
-      Hash: 640417be8ba15ab48b40905ccf417dc6
+      Hash: 3a676fb4cbb1da5d5136e8cfd43dbbf7
     assemblyName: Assembly-CSharp.dll
     namespaceName: GoogleARCore.Examples.HelloAR
     className: HelloARController
@@ -1226,12 +1232,6 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
-  - hash:
-      serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: GoogleARCore.Examples.HelloAR
-    className: LaunchApp
   platform: 13
   scenePathNames:
   - Assets/GoogleARCore/Examples/HelloAR/Scenes/HelloAR.unity
