@@ -253,7 +253,7 @@ namespace GoogleARCore.Examples.HelloAR
             int sizeOfList = GameObjectHorizontalPlanePrefab.Count;
             if (listIndex <= 0)
             {
-                
+             
             }
             else
             {
@@ -263,6 +263,51 @@ namespace GoogleARCore.Examples.HelloAR
         }
 
 
+        
+        public void LaunchAppMessage()
+        {
+            string bundleId = "com.example.sidenavtest";
+            bool fail = false;
+            string message = "message";
+            AndroidJavaClass up = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject ca = up.GetStatic<AndroidJavaObject>("currentActivity");
+            AndroidJavaObject packageManager = ca.Call<AndroidJavaObject>("getPackageManager");
+            AndroidJavaObject launchIntent = null;
+
+            try
+            {
+                launchIntent = packageManager.Call<AndroidJavaObject>("getLaunchIntentForPackage", bundleId);
+                launchIntent.Call<AndroidJavaObject>("putExtra", "arguments", message);
+            }
+            catch (System.Exception e)
+            {
+                fail = true;
+            }
+
+            if (fail)
+            {
+                Application.OpenURL("https://google.com");
+            }
+            else
+            {
+                ca.Call("startActivity", launchIntent);
+            }
+            up.Dispose();
+            ca.Dispose();
+            packageManager.Dispose();
+            launchIntent.Dispose();
+        }
+
+        public void getDataFromJavaApp() {
+            AndroidJavaClass UnityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject currentActivity = UnityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+
+            AndroidJavaObject intent = currentActivity.Call<AndroidJavaObject>("getIntent");
+      
+
+            string arguments = intent.Call<string>("getDataString");
+            _ShowAndroidToastMessage(arguments);
+        }
 
     }
     
