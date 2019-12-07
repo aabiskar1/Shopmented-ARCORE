@@ -467,7 +467,7 @@ namespace Lean.Touch
 				var finger = Fingers[i];
 
 				// Was this set to up last time? If so, it's now inactive
-				if (finger.Up == true)
+				if (finger.Up == true || finger.Set == false)
 				{
 					// Make finger inactive
 					Fingers.RemoveAt(i); InactiveFingers.Add(finger);
@@ -639,6 +639,12 @@ namespace Lean.Touch
 			// No finger found?
 			if (finger == null)
 			{
+				// If a finger goes up but hasn't been registered yet then it will mess up the event flow, so skip it (this shouldn't normally occur).
+				if (set == false)
+				{
+					return;
+				}
+
 				var inactiveIndex = FindInactiveFingerIndex(index);
 
 				// Use inactive finger?

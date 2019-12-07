@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -6,14 +8,78 @@ using UnityEditor;
 
 namespace Lean.Common
 {
-	/// <summary>This class contains useful methods used in almost all of my code.</summary>
+	/// <summary>This class contains useful methods used in almost all <b>LeanTouch</b> code.</summary>
 	public static class LeanHelper
 	{
 		public const string HelpUrlPrefix = "http://carloswilkes.github.io/Documentation/";
 
 		public const string ComponentPathPrefix = "Lean/";
+#if UNITY_EDITOR
+		/// <summary>This method creates an empty GameObject prefab at the current asset folder</summary>
+		public static GameObject CreateAsset(string name)
+		{
+			var gameObject = new GameObject(name);
+			var path       = AssetDatabase.GetAssetPath(Selection.activeObject);
 
-		/// <summary>This gives you the time-independent 't' value for lerp when used for dampening. This returns 1 in edit mode, or if dampening is less than 0.</summary>
+			if (string.IsNullOrEmpty(path) == true)
+			{
+				path = "Assets";
+			}
+
+			path = AssetDatabase.GenerateUniqueAssetPath(path + "/" + name + ".prefab");
+#if UNITY_2018_3_OR_NEWER
+			var prefab = PrefabUtility.SaveAsPrefabAsset(gameObject, path);
+#else
+			var prefab = PrefabUtility.CreatePrefab(path, gameObject);
+#endif
+			Object.DestroyImmediate(gameObject);
+
+			Selection.activeObject = prefab;
+
+			return prefab;
+		}
+#endif
+		/// <summary>This method allows you to create a UI element with the specified component and specified parent, with behaviour consistent with Unity's built-in UI element creation.</summary>
+		public static T CreateElement<T>(Transform parent)
+			where T : Component
+		{
+			var gameObject = new GameObject(typeof(T).Name);
+#if UNITY_EDITOR
+			Undo.RegisterCreatedObjectUndo(gameObject, "Create " + typeof(T).Name);
+#endif
+			var component = gameObject.AddComponent<T>();
+
+			// Auto attach to canvas?
+			if (parent == null || parent.GetComponentInParent<Canvas>() == null)
+			{
+				var canvas = Object.FindObjectOfType<Canvas>();
+
+				if (canvas == null)
+				{
+					canvas = new GameObject("Canvas", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster)).GetComponent<Canvas>();
+
+					canvas.gameObject.layer = LayerMask.NameToLayer("UI");
+
+					canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+
+					// Make event system?
+					if (EventSystem.current == null)
+					{
+						new GameObject("EventSystem", typeof(EventSystem), typeof(StandaloneInputModule));
+					}
+				}
+
+				parent = canvas.transform;
+			}
+
+			gameObject.layer = parent.gameObject.layer;
+
+			component.transform.SetParent(parent, false);
+
+			return component;
+		}
+
+		/// <summary>This method gives you the time-independent 't' value for lerp when used for dampening. This returns 1 in edit mode, or if dampening is less than 0.</summary>
 		public static float DampenFactor(float dampening, float elapsed)
 		{
 			if (dampening < 0.0f)
@@ -29,7 +95,7 @@ namespace Lean.Common
 			return 1.0f - Mathf.Exp(-dampening * elapsed);
 		}
 
-		/// <summary>This allows you to destroy the target object in game and in edit mode, and it returns null.</summary>
+		/// <summary>This method allows you to destroy the target object in game and in edit mode, and it returns null.</summary>
 		public static T Destroy<T>(T o)
 			where T : Object
 		{
@@ -52,7 +118,7 @@ namespace Lean.Common
 			return null;
 		}
 #if UNITY_EDITOR
-		/// <summary>This gives you the actual object behind a SerializedProperty given to you by a property drawer.</summary>
+		/// <summary>This method gives you the actual object behind a SerializedProperty given to you by a property drawer.</summary>
 		public static T GetObjectFromSerializedProperty<T>(object target, SerializedProperty property)
 		{
 			var tokens = property.propertyPath.Replace(".Array.data[", ".[").Split('.');

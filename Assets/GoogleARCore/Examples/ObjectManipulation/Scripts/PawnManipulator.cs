@@ -21,13 +21,17 @@
 namespace GoogleARCore.Examples.ObjectManipulation
 {
     using GoogleARCore;
+    using System.Collections.Generic;
     using UnityEngine;
+    using UnityEngine.EventSystems;
+    using UnityEngine.UI;
 
     /// <summary>
     /// Controls the placement of objects via a tap gesture.
     /// </summary>
     public class PawnManipulator : Manipulator
     {
+        int listIndex = 0;
         /// <summary>
         /// The first-person camera being used to render the passthrough camera image (i.e. AR
         /// background).
@@ -37,7 +41,7 @@ namespace GoogleARCore.Examples.ObjectManipulation
         /// <summary>
         /// A prefab to place when a raycast from a user touch hits a plane.
         /// </summary>
-        public GameObject PawnPrefab;
+        public List<GameObject> PawnPrefab;
 
         /// <summary>
         /// Manipulator prefab to attach placed objects to.
@@ -49,6 +53,22 @@ namespace GoogleARCore.Examples.ObjectManipulation
         /// </summary>
         /// <param name="gesture">The current gesture.</param>
         /// <returns>True if the manipulation can be started.</returns>
+        /// 
+        public void Update()
+        {
+            // Check if the left mouse button was clicked
+            // Check if the left mouse button was clicked
+            if (Input.GetMouseButtonDown(0))
+            {
+                // Check if the mouse was clicked over a UI element
+                if (EventSystem.current.IsPointerOverGameObject())
+                {
+                    Debug.Log("Clicked on the UI");
+                }
+            }
+            Text prefabNameTxt = GameObject.Find("Canvas/prefabLabel").GetComponent<Text>();
+            prefabNameTxt.text = PawnPrefab[listIndex].name;
+        }
         protected override bool CanStartManipulationForGesture(TapGesture gesture)
         {
             if (gesture.TargetObject == null)
@@ -79,41 +99,77 @@ namespace GoogleARCore.Examples.ObjectManipulation
             // Raycast against the location the player touched to search for planes.
             TrackableHit hit;
             TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon;
-
-            if (Frame.Raycast(
-                gesture.StartPosition.x, gesture.StartPosition.y, raycastFilter, out hit))
+            if (!EventSystem.current.IsPointerOverGameObject(gesture.FingerId))
             {
-                // Use hit pose and camera pose to check if hittest is from the
-                // back of the plane, if it is, no need to create the anchor.
-                if ((hit.Trackable is DetectedPlane) &&
-                    Vector3.Dot(FirstPersonCamera.transform.position - hit.Pose.position,
-                        hit.Pose.rotation * Vector3.up) < 0)
+                if (Frame.Raycast(
+                gesture.StartPosition.x, gesture.StartPosition.y, raycastFilter, out hit))
                 {
-                    Debug.Log("Hit at back of the current DetectedPlane");
-                }
-                else
-                {
-                    // Instantiate game object at the hit pose.
-                    var gameObject = Instantiate(PawnPrefab, hit.Pose.position, hit.Pose.rotation);
+                    // Use hit pose and camera pose to check if hittest is from the
+                    // back of the plane, if it is, no need to create the anchor.
+                    if ((hit.Trackable is DetectedPlane) &&
+                        Vector3.Dot(FirstPersonCamera.transform.position - hit.Pose.position,
+                            hit.Pose.rotation * Vector3.up) < 0)
+                    {
+                        Debug.Log("Hit at back of the current DetectedPlane");
+                    }
+                    else
+                    {
+                        // Instantiate game object at the hit pose.
+                        var gameObject = Instantiate(PawnPrefab[listIndex], hit.Pose.position, hit.Pose.rotation);
 
-                    // Instantiate manipulator.
-                    var manipulator =
-                        Instantiate(ManipulatorPrefab, hit.Pose.position, hit.Pose.rotation);
+                        // Instantiate manipulator.
+                        var manipulator =
+                            Instantiate(ManipulatorPrefab, hit.Pose.position, hit.Pose.rotation);
 
-                    // Make game object a child of the manipulator.
-                    gameObject.transform.parent = manipulator.transform;
+                        // Make game object a child of the manipulator.
+                        gameObject.transform.parent = manipulator.transform;
 
-                    // Create an anchor to allow ARCore to track the hitpoint as understanding of
-                    // the physical world evolves.
-                    var anchor = hit.Trackable.CreateAnchor(hit.Pose);
+                        // Create an anchor to allow ARCore to track the hitpoint as understanding of
+                        // the physical world evolves.
+                        var anchor = hit.Trackable.CreateAnchor(hit.Pose);
 
-                    // Make manipulator a child of the anchor.
-                    manipulator.transform.parent = anchor.transform;
+                        // Make manipulator a child of the anchor.
+                        manipulator.transform.parent = anchor.transform;
 
-                    // Select the placed object.
-                    manipulator.GetComponent<Manipulator>().Select();
+                        // Select the placed object.
+                        manipulator.GetComponent<Manipulator>().Select();
+                    }
                 }
             }
         }
+
+
+
+        public void ListCycleRight()
+        {
+            int sizeOfList = PawnPrefab.Count;
+            if (listIndex >= sizeOfList)
+            {
+
+            }
+            else
+            {
+                listIndex++;
+
+            }
+
+        }
+        public void ListCycleLeft()
+        {
+            int sizeOfList = PawnPrefab.Count;
+            if (listIndex <= 0)
+            {
+
+            }
+            else
+            {
+                listIndex--;
+            }
+
+        }
+
+
+
+
     }
 }

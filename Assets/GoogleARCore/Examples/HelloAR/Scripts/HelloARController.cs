@@ -37,8 +37,10 @@ namespace GoogleARCore.Examples.HelloAR
     /// Controls the HelloAR example.
     /// </summary>
     public class HelloARController : MonoBehaviour
+        //Manipulator
+        //https://forum.unity.com/threads/ui-buttons-in-arcore-helloar-example.499645/
     {
-
+        public Slider slider;
         int listIndex = 0;
         /// <summary>
         /// The first-person camera being used to render the passthrough camera image (i.e. AR
@@ -313,6 +315,22 @@ namespace GoogleARCore.Examples.HelloAR
         {
             textShowed.text = word;
 
+        }
+
+        public void removeAnchor() {
+            Destroy(GameObjectPointPrefab);
+            Destroy(GameObjectHorizontalPlanePrefab[listIndex].transform);
+            Destroy(GameObjectHorizontalPlanePrefab[listIndex]);
+            Update();
+
+
+            Debug.Log("Remove anchor pressed");
+        }
+
+
+        public void SliderRotatingModel()
+        {
+            GameObjectHorizontalPlanePrefab[listIndex].transform.rotation = Quaternion.Euler(GameObjectHorizontalPlanePrefab[listIndex].transform.rotation.x, slider.value, GameObjectHorizontalPlanePrefab[listIndex].transform.rotation.z);
         }
 
     }
