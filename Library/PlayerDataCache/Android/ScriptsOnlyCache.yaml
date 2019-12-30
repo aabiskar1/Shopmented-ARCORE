@@ -19,9 +19,10 @@ ScriptsOnlyBuild:
     - GoogleARCore.Examples.ObjectManipulation.ScaleManipulator
     - GoogleARCore.Examples.ObjectManipulation.SelectionManipulator
     - GoogleARCore.Examples.ObjectManipulation.TranslationManipulator
+    Unity.XR.ARFoundation.dll:
+    - UnityEngine.XR.ARFoundation.ARInputManager
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
-    - UnityEditor.TestTools.TestRunner.TestListCacheData
     UnityEngine.SpatialTracking.dll:
     - UnityEngine.SpatialTracking.TrackedPoseDriver
     UnityEngine.UI.dll:
@@ -33,8 +34,6 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.Image
     - UnityEngine.UI.RawImage
     - UnityEngine.UI.Text
-    com.unity.multiplayer-hlapi.Runtime.dll:
-    - UnityEngine.Networking.NetworkCallbacks
   sceneClasses:
     Assets/GoogleARCore/Examples/ObjectManipulation/Scenes/ObjectManipulation.unity:
     - Class: 1
@@ -119,6 +118,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 12256}
     - Class: 114
       Script: {instanceID: 12320}
+    - Class: 114
+      Script: {instanceID: 12348}
     - Class: 114
       Script: {instanceID: 12554}
     - Class: 114

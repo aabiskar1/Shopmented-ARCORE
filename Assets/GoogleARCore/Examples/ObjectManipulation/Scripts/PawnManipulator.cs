@@ -169,6 +169,41 @@ namespace GoogleARCore.Examples.ObjectManipulation
         }
 
 
+        public void LaunchAppMessage()
+        {
+            string bundleId = "com.aabiskar.shopmented";
+            bool fail = false;
+            string message = "message";
+            AndroidJavaClass up = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject ca = up.GetStatic<AndroidJavaObject>("currentActivity");
+            AndroidJavaObject packageManager = ca.Call<AndroidJavaObject>("getPackageManager");
+            AndroidJavaObject launchIntent = null;
+
+            try
+            {
+                launchIntent = packageManager.Call<AndroidJavaObject>("getLaunchIntentForPackage", bundleId);
+                launchIntent.Call<AndroidJavaObject>("putExtra", "arguments", message);
+            }
+            catch (System.Exception e)
+            {
+                fail = true;
+            }
+
+            if (fail)
+            {
+                Application.OpenURL("https://google.com");
+            }
+            else
+            {
+                ca.Call("startActivity", launchIntent);
+            }
+            up.Dispose();
+            ca.Dispose();
+            packageManager.Dispose();
+            launchIntent.Dispose();
+        }
+
+
 
 
     }
